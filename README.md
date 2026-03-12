@@ -26,13 +26,13 @@
 ## Screenshots
 
 <p align="center">
-  <img src="docs/screenshots/home.png" alt="CopyCat home overview" width="48%">
-  <img src="docs/screenshots/note.png" alt="CopyCat note view" width="48%">
+  <img src="docs/screenshots/home-overview.png" alt="CopyCat home overview" width="48%">
+  <img src="docs/screenshots/note-view.png" alt="CopyCat note view" width="48%">
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/tags.png" alt="CopyCat tag management" width="48%">
-  <img src="docs/screenshots/admin.png" alt="CopyCat groups and users admin" width="48%">
+  <img src="docs/screenshots/tags-management.png" alt="CopyCat tag management" width="48%">
+  <img src="docs/screenshots/admin-groups-users.png" alt="CopyCat groups and users admin" width="48%">
 </p>
 
 ## Features

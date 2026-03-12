@@ -257,6 +257,7 @@ Thumbs.db
 .npm-cache-local/
 .tmp-vue-check/
 .tmp-screenshots-data/
+.tmp-*.png
 helm/**/*.tgz
 data/
 /notes/
