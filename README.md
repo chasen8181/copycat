@@ -23,6 +23,18 @@
 
 **Keywords:** self-hosted, markdown, notes, wiki, search, tags, attachments, docker, fastapi, vue
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/home.png" alt="CopyCat home overview" width="48%">
+  <img src="docs/screenshots/note.png" alt="CopyCat note view" width="48%">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/tags.png" alt="CopyCat tag management" width="48%">
+  <img src="docs/screenshots/admin.png" alt="CopyCat groups and users admin" width="48%">
+</p>
+
 ## Features
 
 - Plain markdown storage
