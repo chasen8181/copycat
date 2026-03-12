@@ -1,0 +1,20 @@
+apiVersion: v2
+name: copycat
+description: Helm chart for deploying CopyCat on Kubernetes
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - self-hosted
+  - markdown
+  - notes
+  - fastapi
+  - vue
+  - kubernetes
+  - helm
+home: https://github.com/YanaDevOps/copycat
+icon: https://raw.githubusercontent.com/YanaDevOps/copycat/main/client/assets/copycat-logo.png
+sources:
+  - https://github.com/YanaDevOps/copycat
+maintainers:
+  - name: yanix

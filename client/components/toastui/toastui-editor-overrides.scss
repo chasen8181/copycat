@@ -1,0 +1,344 @@
+.ProseMirror,
+.toastui-editor-defaultUI .ProseMirror,
+.toastui-editor-md-container .toastui-editor-md-preview {
+  padding: 1rem 0 0 0;
+}
+
+.ProseMirror {
+  height: 100%;
+}
+
+.toastui-editor-contents ul > li::before {
+  // Vertically center the bullet point
+  margin-top: 0.7rem;
+}
+
+// Typography
+.ProseMirror,
+.toastui-editor-contents {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+}
+
+.toastui-editor-contents,
+.ProseMirror {
+  h1,
+  .toastui-editor-md-heading1,
+  h2,
+  .toastui-editor-md-heading2,
+  h3,
+  .toastui-editor-md-heading3,
+  h4,
+  .toastui-editor-md-heading4,
+  h5,
+  .toastui-editor-md-heading5,
+  h6,
+  .toastui-editor-md-heading6 {
+    font-weight: bold;
+    line-height: 1.4;
+    margin: 1em 0 0.5em 0;
+    padding: 0;
+    border-bottom: none;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  h1,
+  .toastui-editor-md-heading1 {
+    font-size: 1.75rem;
+  }
+
+  h2,
+  .toastui-editor-md-heading2 {
+    font-size: 1.6rem;
+  }
+
+  h3,
+  .toastui-editor-md-heading3 {
+    font-size: 1.45rem;
+  }
+
+  h4,
+  .toastui-editor-md-heading4 {
+    font-size: 1.3rem;
+  }
+
+  h5,
+  .toastui-editor-md-heading5 {
+    font-size: 1.15rem;
+  }
+
+  h6,
+  .toastui-editor-md-heading6 {
+    font-size: 1rem;
+  }
+
+  p {
+    line-height: 1.6rem;
+    margin: 0 0 1rem 0;
+  }
+}
+
+// Override the default font-family for code blocks as some of the fallbacks are not monospace
+.toastui-editor-contents code,
+.toastui-editor-contents pre,
+.toastui-editor-md-code,
+.toastui-editor-md-code-block {
+  font-family: Consolas, "Lucida Console", Monaco, "Andale Mono", monospace;
+}
+
+// Colours
+.toastui-editor-defaultUI {
+  border: none;
+  border-radius: 1.5rem;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  min-height: 420px;
+}
+
+.toastui-editor-contents {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: rgb(var(--theme-text));
+  }
+  p {
+    color: rgb(var(--theme-text));
+  }
+  pre code {
+    color: rgb(var(--theme-text));
+  }
+}
+
+.toastui-editor-main {
+  background-color: transparent;
+  min-height: 420px;
+}
+
+.toastui-editor-ww-container {
+  background-color: transparent;
+  min-height: 360px;
+}
+
+.toastui-editor-md-container,
+.toastui-editor-main-container {
+  background-color: transparent;
+  min-height: 420px;
+}
+
+.toastui-editor-contents ul,
+.toastui-editor-contents menu,
+.toastui-editor-contents ol,
+.toastui-editor-contents dir {
+  color: rgb(var(--theme-text));
+}
+
+// Code Block
+.toastui-editor-contents pre,
+.toastui-editor-md-code-block-line-background {
+  background-color: rgb(var(--theme-background-elevated));
+}
+
+.dark .toastui-editor-contents pre,
+.dark .toastui-editor-md-code-block-line-background {
+  background-color: rgb(var(--theme-background-elevated));
+}
+
+.toastui-editor-contents pre {
+  margin: 1.15rem 0 1.35rem 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgb(var(--theme-border) / 0.82);
+  border-radius: 1.1rem;
+  background: rgb(var(--theme-background-elevated));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 12px 30px rgb(var(--theme-shadow) / 0.1);
+}
+
+.dark .toastui-editor-contents pre {
+  background: rgb(var(--theme-background-elevated));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.04),
+    0 16px 36px rgb(var(--theme-shadow) / 0.22);
+}
+
+.toastui-editor-contents pre code {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: rgb(var(--theme-text));
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.toastui-editor-md-code,
+.toastui-editor-contents code:not(pre code) {
+  padding: 0.18rem 0.45rem;
+  border: 1px solid rgb(var(--theme-border) / 0.76);
+  border-radius: 0.55rem;
+  background: rgb(var(--theme-background-elevated) / 0.92);
+  color: rgb(var(--theme-text));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  background: none;
+}
+
+// Tables
+.toastui-editor-contents table th {
+  color: rgb(var(--theme-text));
+  background-color: rgb(var(--theme-background-elevated));
+}
+
+.toastui-editor-contents table {
+  color: rgb(var(--theme-text));
+}
+
+.toastui-editor-md-table .toastui-editor-md-table-cell {
+  color: rgb(var(--theme-text));
+}
+
+// Editor
+.ProseMirror {
+  color: rgb(var(--theme-text));
+  min-height: 320px;
+  overflow-y: auto;
+}
+
+// Toolbar
+.toastui-editor-defaultUI-toolbar {
+  background-color: rgb(var(--theme-panel) / 0.65);
+  border-bottom-color: rgb(var(--theme-border) / 0.72);
+  padding: 0.75rem;
+}
+
+.toastui-editor-defaultUI .toastui-editor-md-tab-container {
+  background-color: rgb(var(--theme-panel) / 0.52);
+  border-bottom-color: rgb(var(--theme-border) / 0.72);
+}
+
+.toastui-editor-mode-switch {
+  background-color: rgb(var(--theme-panel) / 0.65);
+  border-color: rgb(var(--theme-border) / 0.72);
+}
+
+.toastui-editor-defaultUI-toolbar button {
+  border: 1px solid transparent;
+  border-radius: 0.875rem;
+}
+
+.toastui-editor-defaultUI .tab-item.active {
+  background-color: rgb(var(--theme-background) / 0.45);
+  color: rgb(var(--theme-text));
+  border-color: rgb(var(--theme-border) / 0.72);
+}
+
+.toastui-editor-defaultUI .tab-item {
+  background-color: rgb(var(--theme-background) / 0.2);
+  color: rgb(var(--theme-text-muted));
+  border-color: rgb(var(--theme-border) / 0.72);
+}
+
+.toastui-editor-md-tab-container .tab-item.active {
+  border-bottom: none;
+}
+
+.toastui-editor-toolbar-divider {
+  background-color: rgb(var(--theme-border) / 0.72);
+}
+
+.dark .toastui-editor-toolbar-icons {
+  // Standard dark theme buttons are dark grey, this position change makes them white
+  background-position-y: -49px;
+}
+
+.toastui-editor-defaultUI-toolbar button:not(:disabled):hover {
+  background-color: rgb(var(--theme-background) / 0.35);
+  border: 1px solid rgb(var(--theme-border) / 0.72);
+}
+
+.toastui-editor-md-block-quote .toastui-editor-md-marked-text {
+  color: rgb(var(--theme-text-muted));
+}
+
+.toastui-editor-md-code,
+.toastui-editor-contents code {
+  background-color: rgb(var(--theme-background-elevated));
+}
+
+.dark .toastui-editor-md-code,
+.dark .toastui-editor-contents code {
+  background-color: rgb(var(--theme-background-elevated));
+}
+
+.toastui-editor-popup {
+  background-color: rgb(var(--theme-panel-strong) / 0.98);
+  border: 1px solid rgb(var(--theme-border) / 0.8);
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 60px rgb(var(--theme-shadow) / 0.18);
+}
+
+.toastui-editor-popup-body {
+  label {
+    color: rgb(var(--theme-text));
+  }
+  input {
+    background-color: rgb(var(--theme-background) / 0.3);
+    border: 1px solid rgb(var(--theme-border) / 0.8);
+    border-radius: 0.875rem;
+  }
+}
+
+.toastui-editor-popup-add-table .toastui-editor-table-cell,
+.toastui-editor-popup-add-table .toastui-editor-table-cell.header {
+  background-color: rgb(var(--theme-background));
+  border-color: rgb(var(--theme-border));
+}
+
+.toastui-editor-popup-add-heading ul li:hover {
+  background-color: rgb(var(--theme-background-elevated));
+}
+
+.toastui-editor-popup-add-image .toastui-editor-tabs .tab-item {
+  color: rgb(var(--theme-text));
+  background-color: rgb(var(--theme-background));
+  border-color: rgb(var(--theme-border));
+}
+
+.toastui-editor-popup-add-image .toastui-editor-file-name.has-file {
+  color: rgb(var(--theme-text));
+}
+
+.toastui-editor-popup-body input[type="text"] {
+  color: rgb(var(--theme-text));
+  background-color: rgb(var(--theme-background));
+}
+
+.toastui-editor-dropdown-toolbar {
+  background-color: rgb(var(--theme-panel-strong) / 0.98);
+  border-color: rgb(var(--theme-border) / 0.8);
+  border-radius: 1rem;
+}
+
+// Tables
+.toastui-editor-contents table th,
+.toastui-editor-contents table td {
+  border-color: rgb(var(--theme-border));
+}
+
+.toastui-editor-contents th p {
+  color: rgb(var(--theme-text));
+}

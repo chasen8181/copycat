@@ -1,0 +1,51 @@
+{
+  "name": "copycat",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Self-hosted markdown notes with search, tags, attachments, and zero database.",
+  "main": "client/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "dev": "vite"
+  },
+  "author": "yanix",
+  "license": "MIT",
+  "funding": "https://www.paypal.com/donate/?hosted_button_id=CGYZPN7LAH8BN",
+  "keywords": [
+    "self-hosted",
+    "markdown",
+    "notes",
+    "knowledge-base",
+    "wiki",
+    "fastapi",
+    "vue",
+    "docker",
+    "search",
+    "attachments"
+  ],
+  "dependencies": {
+    "@jamescoyle/vue-icon": "0.1.2",
+    "@mdi/js": "7.4.47",
+    "@mdi/light-js": "0.2.63",
+    "@toast-ui/editor": "3.2.2",
+    "@toast-ui/editor-plugin-code-syntax-highlight": "3.1.0",
+    "axios": "1.12.2",
+    "mousetrap": "1.6.5",
+    "pinia": "3.0.3",
+    "primevue": "3.53.1",
+    "vue": "3.5.22",
+    "vue-router": "4.5.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "6.0.1",
+    "autoprefixer": "10.4.21",
+    "postcss": "8.5.6",
+    "prettier": "3.6.2",
+    "prettier-plugin-tailwindcss": "0.6.14",
+    "sass-embedded": "1.93.2",
+    "tailwindcss": "3.4.18",
+    "vite": "7.1.9"
+  }
+}
