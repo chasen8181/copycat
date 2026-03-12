@@ -3,6 +3,9 @@ replicaCount: 1
 nameOverride: ""
 fullnameOverride: ""
 
+controller:
+  type: Deployment
+
 image:
   repository: copycat
   pullPolicy: IfNotPresent
@@ -63,6 +66,8 @@ ingress:
 persistence:
   enabled: true
   existingClaim: ""
+  volumeClaimTemplate:
+    enabled: false
   storageClass: ""
   accessModes:
     - ReadWriteOnce
@@ -70,6 +75,11 @@ persistence:
   mountPath: /data
   subPath: ""
   annotations: {}
+
+statefulSet:
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate
 
 resources: {}
 

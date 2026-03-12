@@ -1,0 +1,18 @@
+{{- if eq (include "copycat.controllerType" .) "StatefulSet" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "copycat.headlessServiceName" . }}
+  labels:
+    {{- include "copycat.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  selector:
+    {{- include "copycat.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+{{- end }}

@@ -1,0 +1,3 @@
+{{- if not (or (eq (include "copycat.controllerType" .) "Deployment") (eq (include "copycat.controllerType" .) "StatefulSet")) -}}
+{{- fail (printf "controller.type must be Deployment or StatefulSet, got %q" (include "copycat.controllerType" .)) -}}
+{{- end -}}

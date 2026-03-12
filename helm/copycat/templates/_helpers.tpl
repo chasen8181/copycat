@@ -49,6 +49,22 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- end -}}
 
+{{- define "copycat.controllerType" -}}
+{{- default "Deployment" .Values.controller.type -}}
+{{- end -}}
+
+{{- define "copycat.headlessServiceName" -}}
+{{- printf "%s-headless" (include "copycat.fullname" .) -}}
+{{- end -}}
+
+{{- define "copycat.useVolumeClaimTemplate" -}}
+{{- if and (eq (include "copycat.controllerType" .) "StatefulSet") .Values.persistence.enabled (not .Values.persistence.existingClaim) .Values.persistence.volumeClaimTemplate.enabled -}}true{{- else -}}false{{- end -}}
+{{- end -}}
+
+{{- define "copycat.persistentVolumeClaimName" -}}
+{{- default (include "copycat.fullname" .) .Values.persistence.existingClaim -}}
+{{- end -}}
+
 {{- define "copycat.probePath" -}}
 {{- if .Values.pathPrefix -}}
 {{- printf "%s/health" .Values.pathPrefix -}}

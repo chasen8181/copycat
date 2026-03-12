@@ -1,0 +1,12 @@
+controller:
+  type: StatefulSet
+
+persistence:
+  volumeClaimTemplate:
+    enabled: true
+  size: 10Gi
+
+statefulSet:
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate

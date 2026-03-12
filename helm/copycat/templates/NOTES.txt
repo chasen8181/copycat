@@ -15,8 +15,19 @@
 {{- end }}
 
 2. Important defaults:
+  - Workload type is {{ include "copycat.controllerType" . }}.
   - Replica count is {{ .Values.replicaCount }}.
+  {{- if eq (include "copycat.controllerType" .) "Deployment" }}
   - Deployment strategy is {{ .Values.strategy.type }}.
+  {{- else }}
+  - StatefulSet pod management policy is {{ .Values.statefulSet.podManagementPolicy }}.
+  - StatefulSet update strategy is {{ .Values.statefulSet.updateStrategy.type }}.
+  {{- if eq (include "copycat.useVolumeClaimTemplate" .) "true" }}
+  - Storage comes from a StatefulSet volumeClaimTemplate.
+  {{- else if .Values.persistence.enabled }}
+  - Storage comes from PVC {{ include "copycat.persistentVolumeClaimName" . }}.
+  {{- end }}
+  {{- end }}
   - Persistent data is mounted at {{ .Values.persistence.mountPath }}.
 
 3. Authentication mode:

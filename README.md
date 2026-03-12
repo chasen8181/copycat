@@ -109,14 +109,16 @@ The repository includes a Helm chart at `helm/copycat` for Kubernetes deployment
 
 What the chart creates:
 
-- `Deployment`
+- `Deployment` or `StatefulSet`
 - `Service`
-- `PersistentVolumeClaim`
+- `PersistentVolumeClaim` or StatefulSet `volumeClaimTemplate`
+- headless `Service` for `StatefulSet`
 - auth `Secret` or support for an existing Secret
 - optional `Ingress`
 
 Important defaults:
 
+- `controller.type=Deployment`
 - single replica
 - `Recreate` deployment strategy
 - persistent data mounted at `/data`
@@ -136,12 +138,44 @@ helm upgrade --install copycat ./helm/copycat \
   --set auth.secretKey='replace-this-with-a-long-random-secret'
 ```
 
+### Install as a StatefulSet
+
+Use this when you want a StatefulSet-managed pod identity. For new installs, the cleanest option is a `volumeClaimTemplate`.
+
+Keep `replicaCount: 1` for the normal single-volume setup.
+
+```yaml
+controller:
+  type: StatefulSet
+
+persistence:
+  volumeClaimTemplate:
+    enabled: true
+  size: 10Gi
+```
+
+Install it with:
+
+```sh
+helm upgrade --install copycat ./helm/copycat \
+  --namespace copycat \
+  --create-namespace \
+  -f ./helm/copycat/values-statefulset.yaml \
+  --set image.repository=your-registry/copycat \
+  --set image.tag=latest \
+  --set auth.username=admin \
+  --set auth.password='changeMe!' \
+  --set auth.secretKey='replace-this-with-a-long-random-secret'
+```
+
 ### Use an existing PVC
 
 ```yaml
 persistence:
   existingClaim: copycat-data
 ```
+
+This also works with `controller.type=StatefulSet` if you already have a claim and do not want Helm to create per-pod claims.
 
 ### Use an existing Secret
 
