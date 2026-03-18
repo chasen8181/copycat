@@ -60,7 +60,7 @@
     <input
       ref="noteImportInput"
       type="file"
-      accept=".md,.markdown,.txt,text/markdown,text/plain"
+      :accept="noteImportAccept"
       class="hidden"
       @change="noteImportChangeHandler"
     />
@@ -396,6 +396,12 @@ import {
   copyTextToClipboard,
   getToastOptions,
 } from "../helpers.js";
+import {
+  getImportedNoteTitle,
+  isSupportedNoteImportFile,
+  noteImportAccept,
+  noteImportMaxBytes,
+} from "../noteImport.js";
 import { isCurrentTokenStored } from "../tokenStorage.js";
 
 const props = defineProps({
@@ -423,7 +429,6 @@ const newTagLabel = ref("");
 const newTitle = ref("");
 const note = ref(new Note());
 const noteImportInput = ref();
-const noteImportMaxBytes = 2 * 1024 * 1024;
 const pendingImportFile = ref(null);
 const reservedFilenameCharacters = /[<>:"/\\|?*]/;
 const router = useRouter();
@@ -569,17 +574,6 @@ function openImportDialog() {
   noteImportInput.value?.click();
 }
 
-function isSupportedImportFile(file) {
-  const lowerName = String(file?.name || "").toLowerCase();
-  return [".md", ".markdown", ".txt"].some((extension) =>
-    lowerName.endsWith(extension),
-  );
-}
-
-function getImportedTitle(filename) {
-  return String(filename || "").replace(/\.(md|markdown|txt)$/i, "");
-}
-
 function hasDraftContentForImportReplace() {
   const currentMarkdown = toastEditor.value?.getMarkdown() || "";
   return Boolean(newTitle.value.trim() || currentMarkdown.trim());
@@ -594,7 +588,7 @@ function clearPendingImport() {
 
 async function importFileIntoDraft(file) {
   const importedContent = await file.text();
-  const importedTitle = getImportedTitle(file.name);
+  const importedTitle = getImportedNoteTitle(file.name);
 
   newTitle.value = importedTitle;
   toastEditor.value?.setMarkdown(importedContent);
@@ -614,7 +608,7 @@ async function noteImportChangeHandler(event) {
     return;
   }
 
-  if (!isSupportedImportFile(file)) {
+  if (!isSupportedNoteImportFile(file)) {
     toast.add(
       getToastOptions(
         "Only .md, .markdown, and .txt files can be imported as notes.",

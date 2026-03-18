@@ -265,6 +265,56 @@ class AccessService:
         scope = self.resolve_scope(principal, group)
         return self._notes(scope).export(title)
 
+    def export_all_notes(
+        self, principal: AuthPrincipal, group: str | None
+    ):
+        import shutil
+        import tempfile
+        import zipfile
+
+        from fastapi.responses import FileResponse
+        from starlette.background import BackgroundTask
+
+        scopes = self._export_archive_scopes(principal, group)
+        archive_name = self._archive_filename(scopes)
+        archive_root = os.path.splitext(archive_name)[0]
+        temp_dir = tempfile.mkdtemp(prefix="copycat-export-")
+        archive_path = os.path.join(temp_dir, archive_name)
+
+        with zipfile.ZipFile(
+            archive_path, "w", compression=zipfile.ZIP_DEFLATED
+        ) as archive:
+            archive.writestr(f"{archive_root}/", "")
+            multiple_scopes = len(scopes) > 1
+            for scope in scopes:
+                scope_prefix = self._archive_scope_prefix(
+                    archive_root, scope, multiple_scopes=multiple_scopes
+                )
+                archive.writestr(f"{scope_prefix}/", "")
+                for note_path in sorted(
+                    glob.glob(os.path.join(scope.notes_path, "*.md"))
+                ):
+                    archive.write(
+                        note_path,
+                        arcname=os.path.join(
+                            scope_prefix, os.path.basename(note_path)
+                        ),
+                    )
+
+        logger.info(
+            "User '%s' exported archive '%s'.",
+            principal.username,
+            archive_name,
+        )
+        return FileResponse(
+            archive_path,
+            media_type="application/zip",
+            filename=archive_name,
+            background=BackgroundTask(
+                shutil.rmtree, temp_dir, ignore_errors=True
+            ),
+        )
+
     def search_notes(
         self,
         principal: AuthPrincipal,
@@ -447,6 +497,37 @@ class AccessService:
             self._ensure_scope_dirs(scope)
             scopes.append(scope)
         return scopes
+
+    def _export_archive_scopes(
+        self, principal: AuthPrincipal, group: str | None
+    ) -> list[LibraryScope]:
+        if principal.is_admin:
+            return self._all_scopes(principal)
+        return [self.resolve_scope(principal, group)]
+
+    @staticmethod
+    def _archive_filename(scopes: list[LibraryScope]) -> str:
+        from datetime import datetime
+
+        timestamp = datetime.utcnow().strftime("%Y%m%d-%H%M%S")
+        if len(scopes) > 1:
+            archive_label = "all-notes"
+        else:
+            scope = scopes[0]
+            archive_label = (
+                scope.group_slug if scope.kind == "group" else "my-notes"
+            )
+        return f"copycat-{archive_label}-{timestamp}.zip"
+
+    @staticmethod
+    def _archive_scope_prefix(
+        archive_root: str, scope: LibraryScope, *, multiple_scopes: bool
+    ) -> str:
+        if not multiple_scopes:
+            return f"{archive_root}/notes"
+        if scope.kind == "legacy":
+            return f"{archive_root}/my-notes"
+        return f"{archive_root}/groups/{scope.group_slug or scope.query_value}"
 
     def _legacy_scope(self) -> LibraryScope:
         metadata_path = resolve_root_app_dir(self.base_path)

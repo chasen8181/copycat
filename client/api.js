@@ -278,6 +278,15 @@ export function getNoteExportUrl(title, group = null) {
   );
 }
 
+export function getAllNotesExportUrl(group = null) {
+  const params = new URLSearchParams();
+  if (group) {
+    params.set("group", group);
+  }
+  const query = params.toString();
+  return buildAppUrl(`api/notes/export-all${query ? `?${query}` : ""}`);
+}
+
 export async function getAdminGroups() {
   try {
     const response = await api.get("api/admin/groups");

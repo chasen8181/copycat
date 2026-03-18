@@ -200,6 +200,14 @@ def auth_check(principal: AuthPrincipal = Depends(get_current_principal)):
 
 
 # region Notes
+@router.get("/api/notes/export-all")
+def export_all_notes(
+    group: str | None = Query(default=None),
+    principal: AuthPrincipal = Depends(get_current_principal),
+):
+    return access_service.export_all_notes(principal, group)
+
+
 @router.get("/api/notes/{title}", response_model=Note)
 def get_note(
     title: str,

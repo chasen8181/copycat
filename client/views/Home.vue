@@ -157,7 +157,7 @@
 
 <script setup>
 import { useToast } from "primevue/usetoast";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 
 import {
@@ -220,6 +220,7 @@ const notes = ref([]);
 const router = useRouter();
 const toast = useToast();
 let refreshRequestId = 0;
+const notesChangedEventName = "copycat:notes-changed";
 
 const configReady = computed(() => globalStore.config !== null);
 const activeGroup = computed(() => {
@@ -681,9 +682,14 @@ watch(
 );
 
 onMounted(() => {
+  window.addEventListener(notesChangedEventName, refreshHome);
   isMounted.value = true;
   if (configReady.value) {
     refreshHome();
   }
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener(notesChangedEventName, refreshHome);
 });
 </script>
