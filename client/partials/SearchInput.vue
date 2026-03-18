@@ -55,7 +55,6 @@ import { apiErrorHandler, getTags } from "../api.js";
 import IconLabel from "../components/IconLabel.vue";
 import * as constants from "../constants.js";
 import { useGlobalStore } from "../globalStore.js";
-import { getToastOptions } from "../helpers.js";
 
 const props = defineProps({
   initialSearchTerm: { type: String, default: "" },
@@ -122,15 +121,15 @@ function tagChosen(tag) {
 }
 
 function search() {
-  if (!searchTerm.value) {
-    toast.add(getToastOptions("Please enter a search term.", "Error", "error"));
-    return;
-  }
+  const normalizedSearchTerm = searchTerm.value.trim();
+  searchTerm.value = normalizedSearchTerm;
 
   router.push({
     name: "home",
     query: {
-      [constants.params.searchTerm]: searchTerm.value,
+      ...(normalizedSearchTerm
+        ? { [constants.params.searchTerm]: normalizedSearchTerm }
+        : {}),
       ...(activeGroup() ? { [constants.params.group]: activeGroup() } : {}),
     },
   });

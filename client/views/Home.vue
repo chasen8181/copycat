@@ -78,6 +78,7 @@
                     compact
                     :canModify="canModify"
                     :showGroup="activeGroup === 'all'"
+                    :showContentHighlights="isSearchMode"
                     :availableTags="availableTags"
                     :allowQuickTagging="allowQuickTagging"
                     :maxVisibleTags="2"
@@ -133,6 +134,7 @@
                       compact
                       :canModify="canModify"
                       :showGroup="activeGroup === 'all'"
+                      :showContentHighlights="isSearchMode"
                       :availableTags="availableTags"
                       :allowQuickTagging="allowQuickTagging"
                       @open="openNote(note)"

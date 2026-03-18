@@ -75,9 +75,9 @@ Mousetrap.bindGlobal("ctrl+alt+h", () => {
   }
 });
 
-const isLoginRoute =
+const isInitialLoginRoute =
   route.name === "login" || String(route.path || "").endsWith("/login");
-const initialLoad = isLoginRoute
+const initialLoad = isInitialLoginRoute
   ? getConfig()
   : Promise.all([getConfig(), authCheck()]);
 
@@ -106,12 +106,19 @@ initialLoad
     }
   });
 
+const isHomeRoute = computed(
+  () => String(route.path || "") === "/" || route.name === "home",
+);
+const isLoginRoute = computed(
+  () => String(route.path || "").startsWith("/login") || route.name === "login",
+);
+
 const showNavBar = computed(() => {
-  return route.name !== "login";
+  return !isLoginRoute.value;
 });
 
 const showNavBarLogo = computed(() => {
-  return route.name !== "home";
+  return !isHomeRoute.value;
 });
 
 function toggleSearchModal() {

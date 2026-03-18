@@ -26,7 +26,7 @@
         </div>
         <div class="topbar-actions">
           <CustomButton
-            v-if="!showMetrics"
+            v-if="showSearchButton"
             :iconPath="mdilMagnify"
             label="Search"
             @click="emit('toggleSearchModal')"
@@ -97,9 +97,14 @@ const isAdmin = computed(() => globalStore.principal?.isAdmin === true);
 const canAccessAdminUi = computed(
   () => isAdmin.value && currentAuthType.value !== authTypes.readOnly,
 );
-const showMetrics = computed(() =>
-  route.name === "home",
+const isHomeRoute = computed(() => String(route.path || "") === "/" || route.name === "home");
+const isLoginRoute = computed(
+  () => String(route.path || "").startsWith("/login") || route.name === "login",
 );
+const showMetrics = computed(() =>
+  isHomeRoute.value,
+);
+const showSearchButton = computed(() => !showMetrics.value && !isLoginRoute.value);
 const currentSearchTerm = computed(() => {
   const term = route.query[params.searchTerm];
   return term && term !== "*" ? term : "";
